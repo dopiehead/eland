@@ -1,0 +1,13 @@
+
+.stats-bar {
+    background-color: red;
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+    margin-top: -20px;
+    font-size:1.3em;
+}
+.stats-bar .stat {
+    display: inline-block;
+    margin: 0 15px;
+}

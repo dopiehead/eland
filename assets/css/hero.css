@@ -1,0 +1,12 @@
+.search-container {
+    background-image: linear-gradient(to right,rgba(0,0,0,0.4),rgba(0,0,0,0.7)),url('../images/background/hero.jpeg');
+    background-size: cover;
+    background-position: center;
+    padding: 80px 0;
+}
+.search-card {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
