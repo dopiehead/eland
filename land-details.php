@@ -17,6 +17,16 @@ if(isset($_GET['id'])){
              while($seller = $users->fetch_assoc()){               
                 include ("contents/seller-contents.php");
 
+                $key_features = $conn->prepare("SELECT * FROM key_features WHERE product_id = ?");
+                $key_features->bind_param("i",$id);
+                if($key_features->execute()){
+                    $features = $key_features->get_result();
+                    while($feature = $features->fetch_assoc()){
+                      include("contents/feature-contents.php");
+
+                    }
+                }
+
              }
 
            }
