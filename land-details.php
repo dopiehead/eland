@@ -58,7 +58,8 @@ else{
             <div class="col-lg-8">
                 <!-- Property Title and ID -->
                 <h1 class="property-title"><?= htmlspecialchars($property_quantity) ?> <?= htmlspecialchars($property_size) ?></h1>
-                <p class="property-id">No. <?= htmlspecialchars(md5($property_id))  ?></p>
+                <p class="property-id">No. <?= htmlspecialchars(preg_replace('/\D/', '', md5($property_id))) ?></p>
+
                 
                 <!-- Main Image -->
                 <img src=" <?= htmlspecialchars($property_image) ?>" alt=" <?= htmlspecialchars($property_quantity) ?> <?= htmlspecialchars($property_size)  ?>" class="main-image">
@@ -89,7 +90,7 @@ else{
         <!-- Land Size -->
                   <div class="detail-section">
                      <h2 class="detail-title">Land Size:</h2>
-                     <p class="detail-value"><?= htmlspecialchars($property_quantity)?> <?= htmlspecialchars($product_size)?></p>
+                     <p class="detail-value"><?= htmlspecialchars($property_quantity)?> <?= htmlspecialchars($property_size)?></p>
                  </div>
         
         <!-- Auctioned Price -->
@@ -102,10 +103,7 @@ else{
         <div class="detail-section">
             <h2 class="detail-title">Description:</h2>
             <p class="detail-value description">
-                This prime plot of land is located in the heart of Lekki Phase 1, an 
-                upscale and fast-developing area in Lagos. It is suitable for 
-                residential or mixed-use purposes. The land is fenced, cleared, 
-                and ready for immediate development.
+                <?= htmlspecialchars($property_details) ?>
             </p>
         </div>
         
@@ -113,10 +111,24 @@ else{
         <div class="detail-section">
             <h2 class="detail-title">Key Features:</h2>
             <ul class="feature-list">
-                <li>Gated community with 24/7 security.</li>
-                <li>Good road network and drainage system.</li>
-                <li>Proximity to major landmarks such as The Palms Shopping Mall and Lekki Beach.</li>
-                <li>Documented with Governor's Consent for guaranteed ownership.</li>
+
+                <?php if(!empty($feature_option_1)){ ?>
+                     <li><?= htmlspecialchars($feature_option_1)."."; ?></li>
+               <?php } ?>
+
+                <?php if(!empty($feature_option_2)){ ?>
+                      <li><?= htmlspecialchars($feature_option_2)."."; ?></li>
+                <?php } ?>
+
+                <?php if(!empty($feature_option_3)){ ?>
+                      <li><?= htmlspecialchars($feature_option_3)."."; ?></li>
+                <?php } ?>
+
+                <?php if(!empty($feature_option_4)){ ?>
+                    <li><?= str_replace('#39;', "'", htmlspecialchars($feature_option_4, ENT_QUOTES, 'UTF-8'))."."; ?></li>
+
+                <?php } ?>
+
             </ul>
         </div>
         

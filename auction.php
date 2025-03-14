@@ -77,52 +77,51 @@
     
     <!-- land auction part -->
       
+    <?php
+        error_reporting(E_ALL); // Report all types of errors
+        ini_set('display_errors', 1); // Display errors on the screen
+       require("engine/config.php");
+       $query = " SELECT 
+         products.property_id AS property_id,
+         products.property_name AS property_name,
+         products.property_details AS property_details,
+         products.property_image AS property_image,
+         products.property_category AS property_category,
+         products.property_location AS property_location,
+         products.property_address AS property_address,
+         products.property_quantity AS property_quantity,
+         products.property_size AS property_size,
+         auction.id,
+         auction.poster_id,
+         auction.property_id, 
+         auction.starting_time AS property_starting_time,
+         auction.ending_time,
+         auction.starting_price AS property_starting_price,
+         auction.date
+     FROM products
+     INNER JOIN auction ON products.property_id = auction.property_id ";
+     $getbid = $conn->prepare($query);
+     if($getbid->execute()){
+         $result_bid = $getbid->get_result();
+         $datafound = $result_bid->num_rows; ?>
     <div class="container mb-4">
         <div class="section-header">
-            <h2 class="section-title">Auction Listings(48)</h2>
+            <h2 class="section-title">Auction Listings(<?= htmlspecialchars($datafound) ?>)</h2>
             <p class="section-subtitle">Explore available lands up for auction</p>
         </div>
         
         <div class="row">
-            <!-- Property Card 1 -->
-            <div class="col-md-4">
-                <div class="property-card">
-                    <div class="property-image">
-                        <img src="assets/images/background/product-img.jpeg" alt="Land Property">
-                        <div class="time-badge">
-                            <i class="far fa-clock"></i>
-                            89:59:00
-                        </div>
-                    </div>
-                    <div class="property-rating">
-                        <span class="star"><i class="fas fa-star"></i></span>
-                        <span class="star"><i class="fas fa-star"></i></span>
-                        <span class="star"><i class="fas fa-star"></i></span>
-                        <span class="star"><i class="fas fa-star"></i></span>
-                        <span class="star"><i class="far fa-star"></i></span>
-                    </div>
-                    <div class="property-details">
-                        <h3 class="property-title">6 Hectares Of Land</h3>
-                        <div class="property-location">
-                            <i class="fas fa-map-marker-alt"></i>
-                            Erie, Lagos State
-                        </div>
-                        <div class="property-price">
-                            <div class="price-info">
-                                <span class="price-label">Starting Bid</span>
-                                <span class="price-value">986,000.00</span>
-                            </div>
-                            <button class="btn-detail">View Detail</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
+         <?php          
+         while($property = $result_bid->fetch_assoc()){ 
+            include ("contents/property-listings.php");  
             
-            <!-- Property Card 2 -->
-            <div class="col-md-4">
+            ?>
+         
+         <div class="col-md-4">
                 <div class="property-card">
                     <div class="property-image">
-                        <img src="assets/images/background/product-img.jpeg"" alt="Land Property">
+                        <img src="<?= htmlspecialchars($property_image) ?>" alt="Land Property">
                         <div class="time-badge">
                             <i class="far fa-clock"></i>
                             89:59:00
@@ -136,157 +135,28 @@
                         <span class="star"><i class="far fa-star"></i></span>
                     </div>
                     <div class="property-details">
-                        <h3 class="property-title">6 Hectares Of Land</h3>
+                        <h3 class="property-title"><?= htmlspecialchars($property_name) ?></h3>
                         <div class="property-location">
                             <i class="fas fa-map-marker-alt"></i>
-                            Erie, Lagos State
+                            <?= htmlspecialchars($property_address." ".$property_location) ?>
                         </div>
                         <div class="property-price">
                             <div class="price-info">
                                 <span class="price-label">Starting Bid</span>
-                                <span class="price-value">986,000.00</span>
+                                <span class="price-value"><?= htmlspecialchars(number_format($property['property_starting_price'],0,2)) ?></span>
                             </div>
-                            <button class="btn-detail">View Detail</button>
+                            <a href='auction-details.php?bid_id=<?= htmlspecialchars($property_id); ?>' class="btn-detail text-decoration-none">View Detail</a>
                         </div>
                     </div>
                 </div>
             </div>
-            
-            <!-- Property Card 3 -->
-            <div class="col-md-4">
-                <div class="property-card">
-                    <div class="property-image">
-                        <img src="assets/images/background/product-img.jpeg"" alt="Land Property">
-                        <div class="time-badge">
-                            <i class="far fa-clock"></i>
-                            89:59:00
-                        </div>
-                    </div>
-                    <div class="property-rating">
-                        <span class="star"><i class="fas fa-star"></i></span>
-                        <span class="star"><i class="fas fa-star"></i></span>
-                        <span class="star"><i class="fas fa-star"></i></span>
-                        <span class="star"><i class="fas fa-star"></i></span>
-                        <span class="star"><i class="far fa-star"></i></span>
-                    </div>
-                    <div class="property-details">
-                        <h3 class="property-title">6 Hectares Of Land</h3>
-                        <div class="property-location">
-                            <i class="fas fa-map-marker-alt"></i>
-                            Erie, Lagos State
-                        </div>
-                        <div class="property-price">
-                            <div class="price-info">
-                                <span class="price-label">Starting Bid</span>
-                                <span class="price-value">986,000.00</span>
-                            </div>
-                            <button class="btn-detail">View Detail</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Property Card 4 -->
-            <div class="col-md-4">
-                <div class="property-card">
-                    <div class="property-image">
-                        <img src="assets/images/background/product-img.jpeg"" alt="Land Property">
-                        <div class="time-badge">
-                            <i class="far fa-clock"></i>
-                            89:59:00
-                        </div>
-                    </div>
-                    <div class="property-rating">
-                        <span class="star"><i class="fas fa-star"></i></span>
-                        <span class="star"><i class="fas fa-star"></i></span>
-                        <span class="star"><i class="fas fa-star"></i></span>
-                        <span class="star"><i class="fas fa-star"></i></span>
-                        <span class="star"><i class="far fa-star"></i></span>
-                    </div>
-                    <div class="property-details">
-                        <h3 class="property-title">6 Hectares Of Land</h3>
-                        <div class="property-location">
-                            <i class="fas fa-map-marker-alt"></i>
-                            Erie, Lagos State
-                        </div>
-                        <div class="property-price">
-                            <div class="price-info">
-                                <span class="price-label">Starting Bid</span>
-                                <span class="price-value">986,000.00</span>
-                            </div>
-                            <button class="btn-detail">View Detail</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Property Card 5 -->
-            <div class="col-md-4">
-                <div class="property-card">
-                    <div class="property-image">
-                        <img src="assets/images/background/product-img.jpeg"" alt="Land Property">
-                        <div class="time-badge">
-                            <i class="far fa-clock"></i>
-                            89:59:00
-                        </div>
-                    </div>
-                    <div class="property-rating">
-                        <span class="star"><i class="fas fa-star"></i></span>
-                        <span class="star"><i class="fas fa-star"></i></span>
-                        <span class="star"><i class="fas fa-star"></i></span>
-                        <span class="star"><i class="fas fa-star"></i></span>
-                        <span class="star"><i class="far fa-star"></i></span>
-                    </div>
-                    <div class="property-details">
-                        <h3 class="property-title">6 Hectares Of Land</h3>
-                        <div class="property-location">
-                            <i class="fas fa-map-marker-alt"></i>
-                            Erie, Lagos State
-                        </div>
-                        <div class="property-price">
-                            <div class="price-info">
-                                <span class="price-label">Starting Bid</span>
-                                <span class="price-value">986,000.00</span>
-                            </div>
-                            <button class="btn-detail">View Detail</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Property Card 6 -->
-            <div class="col-md-4">
-                <div class="property-card">
-                    <div class="property-image">
-                        <img src="assets/images/background/product-img.jpeg"" alt="Land Property">
-                        <div class="time-badge">
-                            <i class="far fa-clock"></i>
-                            89:59:00
-                        </div>
-                    </div>
-                    <div class="property-rating">
-                        <span class="star"><i class="fas fa-star"></i></span>
-                        <span class="star"><i class="fas fa-star"></i></span>
-                        <span class="star"><i class="fas fa-star"></i></span>
-                        <span class="star"><i class="fas fa-star"></i></span>
-                        <span class="star"><i class="far fa-star"></i></span>
-                    </div>
-                    <div class="property-details">
-                        <h3 class="property-title">6 Hectares Of Land</h3>
-                        <div class="property-location">
-                            <i class="fas fa-map-marker-alt"></i>
-                            Erie, Lagos State
-                        </div>
-                        <div class="property-price">
-                            <div class="price-info">
-                                <span class="price-label">Starting Bid</span>
-                                <span class="price-value">986,000.00</span>
-                            </div>
-                            <button class="btn-detail">View Detail</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
+<?php
+
+         }
+     }
+?>
+
         </div>
         
         <div class="text-end">

@@ -1,0 +1,116 @@
+
+
+.breadcrumb {
+    background-color: transparent;
+    padding: 0.5rem 0;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    content: ">";
+}
+
+.verification-btn {
+    background-color: #0d5c3f;
+    color: white;
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+}
+
+.car-images {
+    border: 1px solid #dbc8a0;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: white;
+}
+
+.thumbnail {
+    border: 1px solid #dbc8a0;
+    border-radius: 5px;
+    padding: 5px;
+    margin-bottom: 10px;
+    background-color: white;
+}
+
+.vehicle-details {
+    border: 1px solid #dbc8a0;
+    border-radius: 5px;
+    padding: 15px;
+    background-color: white;
+}
+
+.detail-row {
+    display: flex;
+    border-bottom: 1px solid #f0e9d3;
+    padding: 5px 0;
+}
+
+.detail-label {
+    flex: 1;
+    font-weight: 500;
+    color: #555;
+}
+
+.detail-value {
+    flex: 2;
+    color: #333;
+}
+
+.vehicle-description {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.auction-box {
+    background-color: #312461;
+    color: white;
+    border-radius: 5px;
+    padding: 15px;
+    margin-top: 20px;
+}
+
+.auction-row {
+    display: flex;
+    padding: 5px 0;
+}
+
+.auction-label {
+    flex: 1;
+    font-weight: 500;
+}
+
+.auction-value {
+    flex: 1;
+    text-align: right;
+}
+
+.bid-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.watchlist-btn {
+    background-color: transparent;
+    border: 1px solid white;
+    color: white;
+    border-radius: 5px;
+    padding: 10px;
+    width: 100%;
+    text-align: center;
+    text-decoration: none;
+}
+
+.bid-btn {
+    background-color: #e74c3c;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    padding: 10px;
+    width: 100%;
+    text-align: center;
+    text-decoration: none;
+}
