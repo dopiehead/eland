@@ -77,7 +77,39 @@
                         <div class="detail-value"><?= htmlspecialchars($property_location) ?></div>
                     </div>
                 </div>
+
+                <div>
+
+                    <div class='border border-muted border-2 rounded px-3 py-2'>
+                      
+                       <h4 class='text-capitalize fw-bold mb-2'>
+                        bidders list
+                       </h4>
+                       <?php
+                       ini_set('display_errors', 1);
+                       error_reporting(E_ALL);
+                      include("components/get-bidders-list.php");
+                      if($getbidders->execute()){
+                          $result_bids = $getbidders->get_result();
+                           while($bids = $result_bids->fetch_assoc()){?>
+     
+                               <div class='d-flex justify-content-between align-items-center'>
+                                 <img style='height:60px; width:60px; ' class='rounded rounded-circle p-1 border border-success border-2' src="<?= htmlspecialchars($bids['user_image'] ?? "N/A") ?>" alt="">
+                                 <span><?= htmlspecialchars($bids['user_name'] ?? "N/A"); ?></span>
+                                 <span><i class='fas fa-naira-sign'></i><?= htmlspecialchars($bids['bid_amount'] ?? "N/A"); ?></span>
+                                 <span><?= htmlspecialchars($bids['bid_time'] ?? "N/A"); ?></span>
+                            </div> 
+
+ <?php   }
+}
+?>
+
+                    </div>
+
+                </div>
+
             </div>
+
         </div>
         
         <!-- Vehicle Description -->
@@ -101,34 +133,22 @@
                             <!-- Auction Details -->
                             <div class="auction-row">
                                 <div class="auction-label">Time left:</div>
-                              
-                              <?php 
-                                     $get_auction_time = $conn->prepare("SELECT * FROM auction WHERE property_id = ? ORDER BY id DESC LIMIT 1");
-                                     $get_auction_time->bind_param("i", $bid_id);
+                                <?php 
+                                $get_auction_time = $conn->prepare("SELECT * FROM auction WHERE property_id = ? ORDER BY id DESC LIMIT 1");
+                                $get_auction_time->bind_param("i",$bid_id);
+                                if($get_auction_time->execute()){
+                                     $result_auction_time = $get_auction_time->get_result();
+                                     $data = $result_auction_time->fetch_assoc();
+                                     $auction_start_time = $data['starting_time'] ?? 0;
+                                     $auction_end_time = $data['ending_time'] ?? 0;  
+                                                                    
+                                     $start = new DateTime($auction_start_time);
+                                     $end = new DateTime($auction_end_time);
+                                     $interval = $start->diff($end);
 
-                                     if ($get_auction_time->execute()) {
-                                          $result_auction_time = $get_auction_time->get_result();
-                                          $data = $result_auction_time->fetch_assoc();
-
-                                          $auction_start_time = $data['starting_time'] ?? null;
-                                          $auction_end_time = $data['ending_time'] ?? null;
-
-                                          if ($auction_start_time && $auction_end_time) {
-        
-                                              $start = new DateTime($auction_start_time);
-                                              $end = new DateTime($auction_end_time);
-
-                                              $interval = $start->diff($end);
-
-                                               $starting_timestamp = $start->getTimestamp();
-                                               $ending_timestamp = $end->getTimestamp();
-
-                                               $time_difference = $ending_timestamp - $starting_timestamp;
-                                       } else {
-                                               $time_difference = 0;
-                                           }
-                                    }
-                                 ?>
+                                }
+                                
+                                ?>
 
                                  <div class="auction-value">
 
@@ -211,45 +231,6 @@
     <br><br>
     <?php include ("components/footer.php") ?>
     <?php include ("engine/time-format.php"); ?>
-    <?php $formatted_start_time = time_format($auction_start_time);?>
-    <?php $formatted_end_time = time_format($auction_end_time);?>
-   
-
-<script>
-$(document).ready(function () {
-    // Set the target date and time (in ISO format)
-    const target = new Date("<?= htmlspecialchars($time_difference) ?>").getTime();
-   
-    // Update the countdown every second
-    setInterval(function () {
-        const now = new Date().getTime();
-        const timeRemaining = target - now;
-
-        // Calculate days, hours, minutes, and seconds
-        const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
-
-        // Display the result in the respective elements
-        $("#day").text(days.toString().padStart(2, '0'));
-        $("#hour").text(hours.toString().padStart(2, '0'));
-        $("#minute").text(minutes.toString().padStart(2, '0'));
-        $("#second").text(seconds.toString().padStart(2, '0'));
-
-        // If the countdown is finished, show "00" for all values
-        if (timeRemaining < 0) {
-            $("#day").text("00");
-            $("#hour").text("00");
-            $("#minute").text("00");
-            $("#second").text("00");
-        }
-    }, 1000);
-});
-</script>
-
-
-
-    
+   <script src="assets/js/auction.js"></script>
 </body>
 </html>
