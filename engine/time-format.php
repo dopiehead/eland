@@ -12,7 +12,6 @@ function time_format_start($time) {
     return $original_date->format("F j, Y H:i:s");
 }
 
-
 ?>
 
 

@@ -70,40 +70,41 @@
                         <div class="detail-label">Property Type</div>
                         <div class="detail-value">Government issued</div>
                     </div>
-                                  
-                    
+                                                      
                     <div class="detail-row">
                         <div class="detail-label">Location</div>
                         <div class="detail-value"><?= htmlspecialchars($property_location) ?></div>
                     </div>
                 </div>
 
-                <div>
+                <div class='mt-3'>
 
-                    <div class='border border-muted border-2 rounded px-3 py-2'>
+                    <div class='border border-muted border-2 rounded px-3 py-2 bg-white'>
                       
-                       <h4 class='text-capitalize fw-bold mb-2'>
+                       <h4 class='text-capitalize fw-bold mb-3'>
                         bidders list
                        </h4>
                        <?php
                        ini_set('display_errors', 1);
                        error_reporting(E_ALL);
                       include("components/get-bidders-list.php");
+                      include("engine/days-ago.php");  
                       if($getbidders->execute()){
                           $result_bids = $getbidders->get_result();
-                           while($bids = $result_bids->fetch_assoc()){?>
+                           while($bids = $result_bids->fetch_assoc()){
+                                  ?>
      
-                               <div class='d-flex justify-content-between align-items-center'>
+                               <div class='d-flex justify-content-between align-items-center mt-1 border-bottom border-muted pb-2'>
                                  <img style='height:60px; width:60px; ' class='rounded rounded-circle p-1 border border-success border-2' src="<?= htmlspecialchars($bids['user_image'] ?? "N/A") ?>" alt="">
-                                 <span><?= htmlspecialchars($bids['user_name'] ?? "N/A"); ?></span>
+                                 <span style='font-weight:bold' class='fw-bold'><?= htmlspecialchars($bids['user_name'] ?? "N/A"); ?></span>
+                                 
                                  <span><i class='fas fa-naira-sign'></i><?= htmlspecialchars($bids['bid_amount'] ?? "N/A"); ?></span>
-                                 <span><?= htmlspecialchars($bids['bid_time'] ?? "N/A"); ?></span>
+                                 <span class='text-sm text-muted '><?= htmlspecialchars(time_ago($bids['bid_time']) ?? "N/A"); ?></span>
                             </div> 
 
  <?php   }
 }
 ?>
-
                     </div>
 
                 </div>
@@ -134,21 +135,37 @@
                             <div class="auction-row">
                                 <div class="auction-label">Time left:</div>
                                 <?php 
-                                $get_auction_time = $conn->prepare("SELECT * FROM auction WHERE property_id = ? ORDER BY id DESC LIMIT 1");
-                                $get_auction_time->bind_param("i",$bid_id);
-                                if($get_auction_time->execute()){
-                                     $result_auction_time = $get_auction_time->get_result();
-                                     $data = $result_auction_time->fetch_assoc();
-                                     $auction_start_time = $data['starting_time'] ?? 0;
-                                     $auction_end_time = $data['ending_time'] ?? 0;  
-                                                                    
-                                     $start = new DateTime($auction_start_time);
-                                     $end = new DateTime($auction_end_time);
-                                     $interval = $start->diff($end);
+$get_auction_time = $conn->prepare("SELECT * FROM auction WHERE property_id = ? ORDER BY id DESC LIMIT 1");
+$get_auction_time->bind_param("i", $bid_id);
 
-                                }
-                                
-                                ?>
+if ($get_auction_time->execute()) {
+    $result_auction_time = $get_auction_time->get_result();
+    $data = $result_auction_time->fetch_assoc();
+
+    $auction_start_time = $data['starting_time'] ?? 0;
+    $auction_end_time = $data['ending_time'] ?? 0;  
+
+    // Convert to DateTime objects
+    $start = new DateTime($auction_start_time);
+    $end = new DateTime($auction_end_time);
+    $now = new DateTime(); // Get current time
+
+    // Format the auction end time for display
+    $format_date = $end->format("F j, Y H:i:s");
+
+    // Calculate remaining time
+    $interval = $now->diff($end);
+    
+    // Check if time has expired
+    if ($now > $end) {
+        $remaining_time = "Auction ended";
+    } else {
+        $remaining_time = $interval->format("%d days");
+    }
+
+}
+?>
+
 
                                  <div class="auction-value">
 
@@ -156,22 +173,22 @@
        
                                          <div class="countdown d-flex g-3">
                                               <div class="countdown-item">
-                                                   <span id="day">00</span>
+                                                   <span id="days">00</span>
                                                    <div class="label">Days</div>
                                                </div>
                                                <span class="colon">:</span>
                                                <div class="countdown-item">
-                                                   <span id="hour">00</span>
+                                                   <span id="hours">00</span>
                                                    <div class="label">Hours</div>
                                               </div>
                                               <span class="colon">:</span>
                                               <div class="countdown-item">
-                                                   <span id="minute">00</span>
+                                                   <span id="minutes">00</span>
                                                    <div class="label">Minutes</div>
                                               </div>
                                               <span class="colon">:</span>
                                               <div class="countdown-item">
-                                                   <span id="second">00</span>
+                                                   <span id="seconds">00</span>
                                                    <div class="label">Seconds</div>
                                               </div>
                                        </div>
@@ -188,7 +205,7 @@
                             </div>
                             
                             <div class="auction-row">
- 
+
                                 <div class="auction-label">Current Bid:</div>
                                 <?php 
                                 $get_bid_price = $conn->prepare("SELECT * FROM bid WHERE property_id = ? ORDER BY id DESC LIMIT 1");
@@ -205,7 +222,7 @@
                             
                             <div class="auction-row">
                                 <div class="auction-label">Auction Duration:</div>
-                                <div class="auction-value"><?= htmlspecialchars( $interval->format('%d days'))." left "; ?></div>
+                                <div class="auction-value"><?= htmlspecialchars($remaining_time)." left "; ?></div>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -228,7 +245,42 @@
             </div>
         </div>
     </div>
-    <br><br>
+    <script>
+    
+$(document).ready(function () {
+    // Set the target date and time
+    const target = new Date("<?= $format_date ?>").getTime();
+
+    // Update the countdown every second
+    setInterval(function () {
+        const now = new Date().getTime();
+        const timeRemaining = target - now;
+
+        // Calculate days, hours, minutes, and seconds
+        const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+        // Display the result in the respective elements
+        $("#days").text(days.toString().padStart(2, '0'));
+        $("#hours").text(hours.toString().padStart(2, '0'));
+        $("#minutes").text(minutes.toString().padStart(2, '0'));
+        $("#seconds").text(seconds.toString().padStart(2, '0'));
+
+        // If the countdown is finished, show "00" for all values
+        if (timeRemaining < 0) {
+            $("#days").text("00");
+            $("#hours").text("00");
+            $("#minutes").text("00");
+            $("#seconds").text("00");
+        }
+    }, 1000);
+});
+
+
+    </script><br><br>
+
     <?php include ("components/footer.php") ?>
     <?php include ("engine/time-format.php"); ?>
    <script src="assets/js/auction.js"></script>
