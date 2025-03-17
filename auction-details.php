@@ -85,8 +85,8 @@
                         bidders list
                        </h4>
                        <?php
-                       ini_set('display_errors', 1);
-                       error_reporting(E_ALL);
+                      ini_set('display_errors', 1);
+                      error_reporting(E_ALL);
                       include("components/get-bidders-list.php");
                       include("engine/days-ago.php");  
                       if($getbidders->execute()){
@@ -102,9 +102,10 @@
                                  <span class='text-sm text-muted '><?= htmlspecialchars(time_ago($bids['bid_time']) ?? "N/A"); ?></span>
                             </div> 
 
- <?php   }
-}
-?>
+                    <?php  
+                     }
+                     }
+                     ?>
                     </div>
 
                 </div>

@@ -8,7 +8,7 @@
         $countproperty->store_result(); 
         $count_no_of_property = $countproperty->num_rows; 
     }
-?>
+     ?>
         <h2 class="mb-4">New Listings (<?= htmlspecialchars($count_no_of_property) ?>)</h2>
         <div class="row">
         <?php 
@@ -31,9 +31,9 @@
                 </div>
             </div>
 
-            <?php   }
+       <?php   }
 
-}
+     }
 ?>
             <!-- end of card -->
         </div>

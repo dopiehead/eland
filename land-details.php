@@ -1,4 +1,5 @@
-<?php 
+<?php  session_start();
+$buyer = isset($_SESSION['id']) && !empty($_SESSION['id']) ? $_SESSION['id'] :"rand()";
 require ("engine/config.php");
 if(isset($_GET['id'])){
    $id = $_GET['id'];
@@ -360,6 +361,70 @@ else{
             </div>
         </div>
     </div>
+    <input type="hidden" name='seller_id' id='seller_id' value='<?= htmlspecialchars($seller_details) ?>'>
+    <input type="hidden" value='normal' id='product_type'  name='product_type'>
+    <input type="hidden" value='1' name='noofitem' id='noofitem'>
+
+    <script>
+  $(".btn-payment").on("click", function(e) {
+    e.preventDefault();
+    
+    // Get the itemId from the clicked button
+    let itemId = $(this).attr("id");
+    let buyer = "<?= htmlspecialchars($_SESSION['id']); ?>";
+    let seller_id = $("#seller_id").val();
+    let product_type = $("#product_type").val();
+    let noofitem = $("#noofitem").val();
+
+    // Validate the required fields
+    if (!itemId || !seller_id || !product_type || !noofitem) {
+        console.log("All fields are required");
+        swal({
+            title: "Error",
+            text: "All fields are required.",
+            icon: "error"
+        });
+        return;
+    }
+
+    $.ajax({
+        url: "cart-process.php",
+        type: "POST",
+        data: {
+            "itemId": itemId,
+            "buyer": buyer,
+            "seller_id": seller_id,
+            "product_type": product_type,
+            "noofitem": noofitem
+        },
+        success: function(response) {
+            if (response.success) {
+                swal({
+                    title: "Success",
+                    text: "Item added successfully",
+                    icon: "success"
+                });
+            } else {
+                swal({
+                    title: "Notice",
+                    text: response.message,
+                    icon: "warning"
+                });
+            }
+        },
+        error: function(err) {
+            console.log(err);
+            swal({
+                title: "Error",
+                text: "Something went wrong, please try again.",
+                icon: "error"
+            });
+        }
+    });
+
+  });
+</script>
+
 
     <?php include("components/bottom-heading.php"); ?>
     <?php include ("components/footer.php"); ?>
