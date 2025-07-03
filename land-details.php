@@ -425,7 +425,6 @@ else{
   });
 </script>
 
-
     <?php include("components/bottom-heading.php"); ?>
     <?php include ("components/footer.php"); ?>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>

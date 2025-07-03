@@ -31,6 +31,17 @@
                         <a class="nav-link" href="blacklisted.php">Blacklisted Land</a>
                     </li>
                 </ul>
+
+                <ul class='navbar-nav ms-auto'>
+                   <li class="nav-item">
+                        <a class="nav-link rounded bg-primary px-2 py-1 text-white" href="sign-in.php">Log in</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="sign-up.php">Sign up</a>
+                    </li>
+
+               </ul>
             </div>
         </div>
     </nav>

@@ -46,7 +46,7 @@ if ($itemId > 0 && $noofitem > 0 && !empty($seller_id) && !empty($seller_type) &
             $_SESSION['itemId'][] = $itemId;
 
             $_SESSION['seller_id'][] = $seller_id;
-            $_SESSION['seller_type'][] = $seller_type;
+            $_SESSION['product_type'][] = $product_type;
             $_SESSION['noofitem'][] = $noofitem;
             $_SESSION['buyer'][] = $buyer;
             $_SESSION['date_added'][] = $date_added;

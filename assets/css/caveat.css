@@ -1,0 +1,64 @@
+.menu {
+    background-image: radial-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.8)), url("../images/background/hero.jpeg");
+    min-height: 40vh;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; /* Center content horizontally */
+    gap: 16px; /* Increased spacing between elements */
+    padding: 20px;
+    border-radius: 8px; /* Add rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Subtle shadow for depth */
+    transition: background 0.3s ease-in-out; /* Smooth transition for background */
+}
+
+.menu:hover {
+    background-image: radial-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 1)), url("../images/background/hero.jpeg"); /* Darker background on hover */
+}
+
+.menu h3 {
+    font-weight: bold;
+    color: whitesmoke;
+    font-size: 2rem; /* Increased font size for visibility */
+    letter-spacing: 1px; /* Slight letter spacing for a more refined look */
+    text-align: center; /* Center text */
+}
+
+.menu p {
+    color: whitesmoke;
+    font-size: 1.1rem; /* Slightly larger text for readability */
+    text-align: center; /* Center text */
+    line-height: 1.6; /* Improved line height for readability */
+}
+
+@media (max-width: 768px) {
+    .menu {
+        min-height: 50vh; /* Adjust height for smaller screens */
+        padding: 15px; /* Less padding on smaller screens */
+    }
+
+    .menu h3 {
+        font-size: 1.5rem; /* Adjust h3 size on smaller screens */
+    }
+
+    .menu p {
+        font-size: 1rem; /* Adjust p size on smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .menu {
+        min-height: 60vh; /* Adjust height further for mobile screens */
+        padding: 10px; /* Less padding */
+    }
+
+    .menu h3 {
+        font-size: 1.2rem; /* Smaller font size on very small screens */
+    }
+
+    .menu p {
+        font-size: 0.9rem; /* Adjust text size for mobile */
+    }
+}

@@ -3,13 +3,13 @@
             <div class="row justify-content-center">
                 <div class="col-md-8">
                     <div class="search-card">
-                        <form>
+                        <form method="post" action="search-result.php" enctype="multiparts/form-data">
                             <div class="mb-3">
                                 <input type="text" class="form-control" placeholder="Enter property / land location and description to search">
                             </div>
                             <div class="row">
                                 <div class="col-md-3 mb-3">
-                                    <select class="form-select">
+                                    <select name='service' class="form-select">
                                         <option selected>Services</option>
                                         <option>-Any-</option>
                                         <option vlaue='buy'>Buy</option>
@@ -18,7 +18,7 @@
                                 </div>
                                 <div class="col-md-3 mb-3">
 
-                                    <select class="form-select">
+                                    <select name='category' class="form-select">
                                          <option selected>Categories</option>
                                          <option value="">All Lands</option>
                                          <option value="commercial_land">Commercial Lands</option>
@@ -51,7 +51,7 @@
                                     </select>
                                 </div>
                                 <div class="col-md-3 mb-3">
-                                    <select class="form-select">
+                                    <select name='type' class="form-select">
                                         <option selected>Type</option>
                                         <option value=''>-Any-</option>
                                         <option value='government_issued'>Government issued</option>
@@ -62,7 +62,7 @@
                                 </div>
                                 <div class="col-md-3 mb-3">
                                     <?php require("engine/connection.php"); ?>
-                                    <select class="form-select text-capitalize">
+                                    <select name='location' class="form-select text-capitalize">
                                        <option selected disabled>Location</option>
                                        <option value=" ">-Any-</option>
                                      <?php 
@@ -85,10 +85,10 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <input type="text" class="form-control" placeholder="Minimum Price E.g. N 1,000,000">
+                                    <input type="text" name='min_price' class="form-control" placeholder="Minimum Price E.g. N 1,000,000">
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <input type="text" class="form-control" placeholder="Maximum Price E.g. N 1,000,000">
+                                    <input name='max_price' type="text" class="form-control" placeholder="Maximum Price E.g. N 1,000,000">
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-primary w-100" style="background-color: #4a148c; border:none;">Search</button>
